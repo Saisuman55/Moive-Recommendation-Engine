@@ -20,12 +20,12 @@ def create_rating(
 ) -> Rating:
     if db.get(Movie, body.movie_id) is None:
         raise HTTPException(status_code=404, detail="Movie not found")
-    existing = db.execute(
+    existing = db.scalars(
         select(Rating).where(
             Rating.user_id == user.id,
             Rating.movie_id == body.movie_id,
         )
-    ).scalar_one_or_none()
+    ).first()
     if existing:
         existing.rating = body.rating
         db.add(existing)

@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Always resolve `backend/.env` (not cwd) so uvicorn/pytest work from repo root or `backend/`.
@@ -21,6 +22,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 60 * 24 * 7
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     model_path: str = "./data/svd_model.pkl"
+    debug: bool = Field(default=False, validation_alias="DEBUG")
 
     @property
     def jwt_secret(self) -> str:
