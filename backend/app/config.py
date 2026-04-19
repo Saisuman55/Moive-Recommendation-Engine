@@ -1,10 +1,18 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Always resolve `backend/.env` (not cwd) so uvicorn/pytest work from repo root or `backend/`.
+_BACKEND_DIR = Path(__file__).resolve().parent.parent
+_ENV_PATH = _BACKEND_DIR / ".env"
+_SETTINGS_ENV = (
+    {"env_file": str(_ENV_PATH), "env_file_encoding": "utf-8"} if _ENV_PATH.is_file() else {}
+)
+
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(**_SETTINGS_ENV, extra="ignore")
 
     # Default to SQLite so `uvicorn` works without Docker/Postgres. Docker Compose sets DATABASE_URL to Postgres.
     database_url: str = "sqlite:///./movie_rec.db"

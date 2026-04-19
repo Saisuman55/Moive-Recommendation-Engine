@@ -47,8 +47,7 @@ Write-Host 'API: http://127.0.0.1:8000/docs' -ForegroundColor Green
 
 $webCmd = @"
 cd '$frontend'
-`$env:VITE_API_URL='http://127.0.0.1:8000'
-Write-Host 'Web: http://127.0.0.1:5173' -ForegroundColor Green
+Write-Host 'Web: http://127.0.0.1:5173 (API via Vite proxy /api -> http://127.0.0.1:8000)' -ForegroundColor Green
 npm run dev -- --host 127.0.0.1 --port 5173
 "@
 

@@ -39,6 +39,7 @@ def train_and_persist(db: Session, n_factors: int = 20, n_epochs: int = 20) -> d
         pickle.dump(algo, f)
 
     db.execute(delete(Recommendation))
+    db.flush()
     user_ids = df["user_id"].unique().tolist()
     movie_ids_all = (
         db.execute(select(Movie.id)).scalars().all()

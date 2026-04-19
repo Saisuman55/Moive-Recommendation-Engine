@@ -47,6 +47,18 @@ $env:VITE_API_URL="http://127.0.0.1:8000"
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
 
+## Tests (backend)
+
+With Python 3.11+ installed:
+
+```powershell
+cd backend
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+Uses an isolated temp SQLite DB (see `backend/tests/conftest.py`).
+
 ## Quick start (Docker)
 
 1. Install Docker Desktop and ensure `docker compose version` works in a **new** terminal.
