@@ -18,7 +18,15 @@ From the repo root in PowerShell:
 
 Then open **http://127.0.0.1:5173** (API docs: **http://127.0.0.1:8000/docs**).
 
-The script creates `backend\venv`, installs dependencies once, runs the API with **SQLite** (`backend\movie_rec.db`), and starts Vite with `VITE_API_URL=http://127.0.0.1:8000`.
+The script creates `backend\venv`, installs dependencies once, runs the API with **SQLite** (`backend\movie_rec.db`), and starts Vite. In **development**, the UI calls **`/api/...`** on the same host as Vite; Vite **proxies** that to `http://127.0.0.1:8000`, which avoids CORS and “Failed to fetch” when the page is opened as `localhost` vs `127.0.0.1`.
+
+**Backend only**
+
+```powershell
+.\backend\start.ps1
+```
+
+Opens **http://127.0.0.1:8000/docs** (uses `backend\.env` and SQLite by default).
 
 **Manual equivalent**
 
