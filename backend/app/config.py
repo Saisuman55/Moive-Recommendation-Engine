@@ -6,7 +6,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/movie_rec"
+    # Default to SQLite so `uvicorn` works without Docker/Postgres. Docker Compose sets DATABASE_URL to Postgres.
+    database_url: str = "sqlite:///./movie_rec.db"
     better_auth_url: str = "http://localhost:5173"
     better_auth_secret: str = "change-me-in-production-use-long-random-string"
     access_token_expire_minutes: int = 60 * 24 * 7

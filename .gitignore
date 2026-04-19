@@ -11,6 +11,8 @@ dist/
 *.tsbuildinfo
 .venv/
 venv/
+backend/venv/
+*.db
 *.egg-info/
 .DS_Store
 Thumbs.db

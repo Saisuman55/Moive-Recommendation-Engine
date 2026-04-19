@@ -12,6 +12,12 @@ from app.routers import auth, movies, ratings, recommendations
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    settings = get_settings()
+    if settings.database_url.startswith("sqlite"):
+        from app.db import engine
+        from app.models import Base
+
+        Base.metadata.create_all(bind=engine)
     _seed_sample_movies()
     yield
 
