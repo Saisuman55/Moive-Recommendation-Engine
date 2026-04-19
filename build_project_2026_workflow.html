@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Build any project from scratch in 2026</title>
+  <style>
+    :root {
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      --color-text-primary: #111827;
+      --color-text-secondary: #6b7280;
+      --color-border-tertiary: #e5e7eb;
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f9fafb;
+      --color-background-tertiary: #f3f4f6;
+      --border-radius-lg: 12px;
+      --border-radius-md: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-background-secondary);
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      padding: 1.5rem 1rem 3rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .root { padding: 0; }
+    .hero { margin-bottom: 1.5rem; }
+    .hero h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 6px;
+    }
+    .hero p {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+    .phases-bar { display: flex; gap: 4px; margin-bottom: 1.5rem; }
+    .phase-pill {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .phase-pill.active { opacity: 1; }
+    .phase-pill:not(.active) { opacity: 0.35; }
+    .phase-block {
+      margin-bottom: 8px;
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-lg);
+      background: var(--color-background-primary);
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .phase-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .phase-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      flex: 1;
+    }
+    .phase-chevron {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      transition: transform 0.2s;
+    }
+    .phase-chevron.open { transform: rotate(180deg); }
+    .phase-body { border-top: 0.5px solid var(--color-border-tertiary); }
+    .step {
+      padding: 14px 16px 14px 56px;
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: 4px;
+    }
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .code-block {
+      background: var(--color-background-tertiary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-md);
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-text-primary);
+      line-height: 1.7;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .tip {
+      background: var(--color-background-secondary);
+      border-radius: var(--border-radius-md);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .tag {
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="root">
+    <div class="hero">
+      <h1>Build any project from scratch in 2026</h1>
+      <p>A step-by-step workflow using AI tools — from idea to deployed, bug-free project. Click each phase to expand.</p>
+    </div>
+
+    <div class="phases-bar" id="phasesBar"></div>
+    <div id="phaseList"></div>
+  </div>
+
+  <script>
+    const phases = [
+      {
+        color: "#7F77DD",
+        bg: "#EEEDFE",
+        textColor: "#3C3489",
+        title: "Docs",
+        steps: [
+          {
+            num: "1.1",
+            label: "PRD Doc — Define your idea",
+            desc: "Open ChatGPT, Claude, or any LLM. Paste this prompt and replace the brackets with your idea details.",
+            code: `"I want to build [your project idea]. Target users: [who will use it]. Core features: [list 3–5 features]. Please generate a detailed Product Requirements Document (PRD) with goals, user stories, feature list, and success metrics."`,
+            tip: "Save the output as PRD.md in a new folder called /docs",
+          },
+          {
+            num: "1.2",
+            label: "Design Doc — Get visual inspiration",
+            desc: "Find 1–3 websites whose design you love. Copy their URLs and give them to an LLM with this prompt.",
+            code: `"Look at these websites: [url1], [url2]. Analyze their design language — colors, layout, typography, component style. Generate a Design Doc for my project [name] based on this aesthetic."`,
+            tip: "Save as DESIGN.md in your /docs folder",
+          },
+          {
+            num: "1.3",
+            label: "Tech Stack Doc — Pick your tools",
+            desc: "Ask an LLM to recommend a tech stack based on your project type, then finalize your choices.",
+            code: `"Based on this PRD [paste PRD], recommend the best tech stack in 2026. Consider: frontend, backend, auth, database, deployment. Justify each choice."`,
+            tags: ["Next.js / React", "TypeScript", "Better Auth", "Neon DB", "Tailwind CSS"],
+            tip: "Save as TECHSTACK.md in your /docs folder",
+          },
+        ],
+      },
+      {
+        color: "#1D9E75",
+        bg: "#E1F5EE",
+        textColor: "#085041",
+        title: "Build",
+        steps: [
+          {
+            num: "2.1",
+            label: "Upload your 3 docs to Antigravity",
+            desc: "Open Antigravity, create a new project, and upload all 3 files from your /docs folder.",
+            tip: "Make sure all 3 files are in the same source folder before uploading",
+          },
+          {
+            num: "2.2",
+            label: "Paste the generation prompt",
+            desc: "Use this prompt in Antigravity to generate a structured, sequential to-do list for your project.",
+            code: `"Based on the uploaded PRD, Design, and Tech Stack docs, generate a proper project todo list for [project name]. Each task should be atomic — one task at a time, sequentially ordered, with no overlapping dependencies."`,
+          },
+          {
+            num: "2.3",
+            label: "Execute tasks one by one",
+            desc: "Antigravity will give you a prioritized list. Complete each task before moving to the next — don't skip ahead.",
+            tip: "If a task feels too big, ask Antigravity to break it into sub-tasks",
+          },
+        ],
+      },
+      {
+        color: "#378ADD",
+        bg: "#E6F1FB",
+        textColor: "#0C447C",
+        title: "Integrate",
+        steps: [
+          {
+            num: "3.1",
+            label: "Better Auth — Authentication setup",
+            desc: "Go to Better Auth dashboard, create a new app, then copy your credentials into your .env file.",
+            code: "BETTER_AUTH_URL=https://your-app.better-auth.com\nBETTER_AUTH_SECRET=your_secret_key_here",
+            tip: "Supports Google, GitHub, magic link, and password login out of the box",
+          },
+          {
+            num: "3.2",
+            label: "Neon Database — Serverless Postgres",
+            desc: "Sign up at neon.tech, create a new project, and copy the connection string into your .env file.",
+            code: "DATABASE_URL=postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require",
+            tip: "Neon auto-scales to zero when idle — no surprise bills",
+          },
+          {
+            num: "3.3",
+            label: "Let Antigravity wire everything up",
+            desc: "With your .env values set, go back to Antigravity and continue the task list — it will handle the integration code automatically.",
+          },
+        ],
+      },
+      {
+        color: "#D85A30",
+        bg: "#FAECE7",
+        textColor: "#712B13",
+        title: "Deploy",
+        steps: [
+          {
+            num: "4.1",
+            label: "Initialize and push your repo",
+            desc: "Run these commands in your project root to push your code to GitHub.",
+            code: 'git init\ngit add .\ngit commit -m "initial commit"\ngit remote add origin https://github.com/you/project.git\ngit push -u origin main',
+          },
+          {
+            num: "4.2",
+            label: "Add a .gitignore file",
+            desc: "Always exclude sensitive files before committing.",
+            code: ".env\n.env.local\nnode_modules/\n.next/",
+          },
+        ],
+      },
+      {
+        color: "#639922",
+        bg: "#EAF3DE",
+        textColor: "#27500A",
+        title: "Quality",
+        steps: [
+          {
+            num: "5.1",
+            label: "Install CodeRabbit on your GitHub repo",
+            desc: 'Go to coderabbit.ai → click "Install on GitHub" → select your repository → authorize access.',
+            tip: "Free tier covers public and small private repos",
+          },
+          {
+            num: "5.2",
+            label: "How it works",
+            desc: "Every time you push a commit or open a pull request, CodeRabbit automatically reviews your code and leaves inline comments highlighting bugs, logic errors, security issues, and improvement suggestions — directly on GitHub.",
+          },
+          {
+            num: "5.3",
+            label: "Fix, commit, repeat",
+            desc: "Address CodeRabbit's suggestions, commit the fixes, and it will re-review until your code is clean. This is your final quality gate before shipping.",
+          },
+        ],
+      },
+    ];
+
+    const bar = document.getElementById("phasesBar");
+    const list = document.getElementById("phaseList");
+    let openIdx = 0;
+
+    function render() {
+      bar.innerHTML = "";
+      list.innerHTML = "";
+
+      phases.forEach((ph, i) => {
+        const pill = document.createElement("div");
+        pill.className = "phase-pill" + (i === openIdx ? " active" : "");
+        pill.style.background = ph.color;
+        pill.onclick = () => {
+          openIdx = openIdx === i ? -1 : i;
+          render();
+        };
+        bar.appendChild(pill);
+
+        const block = document.createElement("div");
+        block.className = "phase-block";
+
+        const hdr = document.createElement("div");
+        hdr.className = "phase-header";
+        hdr.onclick = () => {
+          openIdx = openIdx === i ? -1 : i;
+          render();
+        };
+
+        const numEl = document.createElement("div");
+        numEl.className = "phase-num";
+        numEl.style.background = ph.bg;
+        numEl.style.color = ph.textColor;
+        numEl.textContent = i + 1;
+
+        const titleEl = document.createElement("div");
+        titleEl.className = "phase-title";
+        titleEl.textContent = ph.title;
+
+        const chev = document.createElement("div");
+        chev.className = "phase-chevron" + (i === openIdx ? " open" : "");
+        chev.textContent = "▾";
+
+        hdr.append(numEl, titleEl, chev);
+        block.appendChild(hdr);
+
+        if (i === openIdx) {
+          const body = document.createElement("div");
+          body.className = "phase-body";
+          ph.steps.forEach((s) => {
+            const step = document.createElement("div");
+            step.className = "step";
+            step.innerHTML =
+              `<div class="step-label">${s.num}</div>` +
+              `<div class="step-title">${s.label}</div>` +
+              `<div class="step-desc">${s.desc}</div>`;
+            if (s.code) {
+              const cb = document.createElement("div");
+              cb.className = "code-block";
+              cb.textContent = s.code;
+              step.appendChild(cb);
+            }
+            if (s.tags) {
+              const tr = document.createElement("div");
+              tr.className = "tag-row";
+              s.tags.forEach((t) => {
+                const tag = document.createElement("span");
+                tag.className = "tag";
+                tag.style.background = ph.bg;
+                tag.style.color = ph.textColor;
+                tag.textContent = t;
+                tr.appendChild(tag);
+              });
+              step.appendChild(tr);
+            }
+            if (s.tip) {
+              const tip = document.createElement("div");
+              tip.className = "tip";
+              tip.textContent = s.tip;
+              step.appendChild(tip);
+            }
+            body.appendChild(step);
+          });
+          block.appendChild(body);
+        }
+        list.appendChild(block);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
