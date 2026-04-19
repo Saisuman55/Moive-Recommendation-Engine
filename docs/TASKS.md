@@ -46,11 +46,11 @@ Note: wiring the external **Better Auth** hosted product is optional; this codeb
 
 - [x] **4.1** `git init` and initial commit (excluding `.env`, `node_modules`, `*.pkl` via `.gitignore`).
 
-**You do next**
+**GitHub (linked)**
 
-- [ ] **4.2** Create an empty GitHub repo (e.g. `movie-rec-engine`).
-- [ ] **4.3** `git remote add origin https://github.com/<you>/<repo>.git`
-- [ ] **4.4** `git branch -M main` then `git push -u origin main`
+- [x] **4.2** Remote repo: [Moive-Recommendation-Engine](https://github.com/Saisuman55/Moive-Recommendation-Engine).
+- [x] **4.3** `git remote add origin https://github.com/Saisuman55/Moive-Recommendation-Engine.git`
+- [x] **4.4** `main` pushed and tracking `origin/main` (merged existing `README.md` from GitHub).
 
 ---
 
